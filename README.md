@@ -1,4 +1,5 @@
 # Discrete Time Models in Python
+#### Version 0.1
 
 
 ```python
