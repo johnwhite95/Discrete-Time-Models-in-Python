@@ -1,4 +1,4 @@
-# Discrete-Time-Models-in-Python
+# Discrete Time Models in Python
 
 
 ```python
