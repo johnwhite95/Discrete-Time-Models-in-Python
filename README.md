@@ -45,7 +45,7 @@ class FDM2:
         return(sequence)
 ```
 
-Given the starting conditions p = 1.1, q = 0.4, and the parameters K = 1, r = 1.3, s = 0.5, u = 0.7, and v = 1.6, create an instance of the two-system class passing the predator-prey model as a function along with the initial values and the parameters. The options "plot" and "phase" are selected, in order to plot the change in time of the populations and the phase plot, respectively. This yields the following two plots
+Given the starting conditions `p = 1.1`, `q = 0.4`, and the parameters `K = 1`, `r = 1.3`, `s = 0.5`, `u = 0.7`, and `v = 1.6`, create an instance of the two-system class passing the predator-prey model as a function along with the initial values and the parameters. The options "plot" and "phase" are selected, in order to plot the change in time of the populations and the phase plot, respectively. This yields the following two plots
 
 ```python
 pred_prey = FDM2(1.1, 0.4, predator_prey, 1, 1.3, 0.5, 0.7, 1.6)
