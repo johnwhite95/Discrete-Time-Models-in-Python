@@ -119,6 +119,7 @@ fdm3 = FDM3(500, 1, 0, sir, 0.001, 0.1)
 fdm3.generate(50, "phase")
 ```
 
+![png](output_8_3.png
 
 ![png](output_8_0.png)
 
