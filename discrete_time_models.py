@@ -110,6 +110,3 @@ class FDM3:
             plt.show()
             
         return(sequence)
-
-pred_prey = FDM2(1.1, 0.4, predator_prey, 1, 1.3, 0.5, 0.7, 1.6)
-print(pred_prey.generate(80, "plot", "phase"))
