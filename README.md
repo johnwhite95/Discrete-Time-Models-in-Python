@@ -115,8 +115,8 @@ class FDM3:
 An instance of the three-system class is created below along with the relevant plots.
 
 ```python
-fdm3 = FDM3(500, 1, 0, sir, 0.001, 0.1)
-fdm3.generate(50, "phase")
+SIR = FDM3(500, 1, 0, sir, 0.001, 0.1)
+SIR.generate(50, "plot", "phase")
 ```
 
 ![png](output_8_3.png)
