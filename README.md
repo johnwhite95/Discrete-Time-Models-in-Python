@@ -1,4 +1,4 @@
-# Discrete Time Models in Python
+# PyDTM
 #### Version 0.1
 
 
