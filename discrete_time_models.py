@@ -1,112 +1,51 @@
-# import necessary libraries
+# import libraries
+from scipy.optimize import fsolve
 import matplotlib.pyplot as plt
 import numpy as np
-import pandas as pd
 
-""" 
-a few example models
-"""
-# malthusian model
-def malthus(F, d, x): return((1 + F - d) * x)
-
-# discrete predator-prey
-def predator_prey(K, r, s, u, v, p, q): return([p * (1 + r * (1 - p / K)) - s * p * q, (1 - u) * q + v * p * q])
-
-# discrete SIR model
-def sir(alpha, gamma, s, i, r): return([s - alpha*s*i, i + alpha*s*i - gamma*i, r + gamma*i])
-
-"""
-Classes for analysis of finite-difference methods:
-FDM - for single systems
-FDM2 - for double systems
-FDM3 - for triple systems
-"""
-class FDM:
-
-    def __init__(self, x0, func, *variables):
-
-        self.x, self.func, *self.variables = x0, func, *variables
-        
-    def update(self):
-
-        self.x = self.func(*self.variables, self.x)
-        
-    def generate(self, n, plot = 0):
-
-        sequence = []
-        for i in range(n):
-            sequence.append(self.x)
-            self.update()
-        if (plot == "plots:true"):
-            fig, ax, = plt.subplots()
-            ax.plot(range(n), sequence, 'go--', alpha = 0.5)
-            plt.show()
-        return (np.array(sequence))
-
-class FDM2:
+# define a class for a finite difference equation model
+class Fin_diff:
     
-    def __init__(self, x0, y0, func, *variables):
+    def __init__(self, func, seed=0, length=0):
         
-        self.x, self.y, self.func, *self.variables = x0, y0, func, *variables
-        
-    def update(self):
-        self.x, self.y = self.func(*self.variables, self.x, self.y)
-        
-    def generate(self, n, *arguments):
-        
-        sequence = []
-        
-        for i in range(n):
-            sequence.append([self.x, self.y])
-            self.update()
-        if ("plot" in arguments):
-            fig, ax, = plt.subplots()
-            ax.plot(range(n), sequence, 'go--', alpha = 0.5)
-            plt.show()
-            
-        sequence = np.array(sequence)
-        if ("phase" in arguments):
-            xp = sequence[0:len(sequence), 0:1]
-            yp = sequence[0:len(sequence), 1:2]
-            plt.plot(xp, yp, 'go--', alpha = 0.5)
-            plt.show()
-        
-        return(sequence)
-
-class FDM3:
+        self.func = func
+        self.length = length
+        self.sequence = []
     
-    def __init__(self, x0, y0, z0, func, *variables):
-        
-        self.x, self.y, self.z, self.func, *self.variables = x0, y0, z0, func, *variables
-        self.x2, self.y2, self.z2, self.func2, *self.variables2 = x0, y0, z0, func, *variables
-            
+    # update the function; that is, take the previous value and run it through the function,
+    # storing it as a new value
     def update(self):
-        self.x, self.y, self.z = self.func(*self.variables, self.x, self.y, self.z)
-        self.x2, self.y2, self.z2 = self.func(*self.variables, self.x2, self.y2, self.z2)
-        
-    def generate(self, n, *arguments):
-        
-        sequence = []
-        
-        for cnt in range(n):
-            sequence.append([self.x, self.y, self.z])
+        self.seed = self.func(self.seed)
+    
+    # generate the sequence
+    def generate(self, length, seed):
+        self.seed = seed
+        for i in range(length):
+            self.sequence.append(self.seed)
             self.update()
-        if ("plot" in arguments):
-            fig, ax, = plt.subplots()
-            ax.plot(range(n), sequence, 'go--', alpha = 0.5)
-            plt.show()
-            
-        sequence = np.array(sequence)
+        return(self.sequence)
+    
+    # determine the equilibrium of the equation by finding the intersection with
+    # y = x
+    def find_equilibrium(self):
+        def g(xy):
+            x, y = xy
+            z = np.array([y - x, y - self.func(x)])
+            return(z)
+        return([fsolve(g, [1, 1]), fsolve(g, [-10, -10])])
+    
+    # plot the sequence values
+    def plot(self):
+        fig, ax, = plt.subplots()
+        ax.plot(np.arange(0, len(self.sequence)), self.sequence, 'go--', alpha = 0.5)
+        plt.show()
+
+# an example function
+def f(x):
+    return(-1*x**3)
         
-        if ("phase" in arguments):
-            xp = sequence[0:len(sequence), 0:1]
-            yp = sequence[0:len(sequence), 1:2]
-            zp = sequence[0:len(sequence), 2:3]
-            plt.plot(xp, yp, 'go--', alpha = 0.5)
-            plt.show()
-            plt.plot(yp, zp, 'go--', alpha = 0.5)
-            plt.show()
-            plt.plot(xp, zp, 'go--', alpha = 0.5)
-            plt.show()
-            
-        return(sequence)
+# example of information provided using the equation's class
+my_findiff = Fin_diff(f)
+print(my_findiff.generate(10, 0.99))
+print(my_findiff.find_equilibrium())
+my_findiff.plot()
