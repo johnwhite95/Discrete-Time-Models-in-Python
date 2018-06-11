@@ -1,4 +1,4 @@
-# PyFDM
+# PyFinDiff
 #### Version 0.2
 
 ### An example function
